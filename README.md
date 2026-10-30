@@ -17,3 +17,21 @@ Maxi takes into account several different factors and places an emphasize on a f
 10. Adaptive Breaks (Whether you want one large break or pomodoro/flowmodoro breaks)
 
 All of your responses to this will be saved to a document titled "scheduleai.txt" as well as the schedule generated.
+
+# How to run
+
+Requires Python 3 only (standard library, nothing to install, no API key).
+
+```
+python3 main.py
+```
+
+Maxi asks the ten questions above, prints your schedule, and saves the answers plus the schedule to `scheduleai.txt`. Generation is local and rule-based: wake/sleep times anchor the day, meals are placed adaptively or at fixed times, habits and a health block are woven between focus blocks, breaks follow the style you pick (pomodoro 25/5, flowmodoro 50/10, or one large break), and the adaptability score sets how much buffer sits between blocks.
+
+Non-interactive use, and custom templates:
+
+```
+python3 main.py --answers answers.txt
+```
+
+where `answers.txt` holds one `key: value` line per factor (keys: age, habits, situation, wake, sleep, adaptability, health, conflicts, adaptive_eating, break_style, template). A template file lists your own blocks, one per line as `minutes | label`, and replaces the built-in block sequence.
