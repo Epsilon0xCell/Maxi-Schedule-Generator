@@ -136,10 +136,13 @@ def build_schedule(answers):
                 if not line or "|" not in line:
                     continue
                 minutes, label = line.split("|", 1)
+                minutes = int(minutes)
+                if minutes <= 0:
+                    continue
                 maybe_meals()
-                if cursor + int(minutes) > sleep - 30:
+                if cursor + minutes > sleep - 30:
                     break
-                add(int(minutes), label.strip())
+                add(minutes, label.strip())
     else:
         cycle = 0
         while cursor + focus_len <= sleep - 30:
@@ -164,8 +167,10 @@ def build_schedule(answers):
         add(30, f"Habit: {habit_queue.pop(0)}")
     if not health_done and answers.get("health") and cursor + 30 <= sleep - 30:
         add(30, f"Health block ({answers['health']})")
-    if cursor < sleep - 30:
-        add(min(30, sleep - cursor), "Wind-down")
+    if cursor <= sleep - 30:
+        # Wind-down belongs at the end of the day, not straight after
+        # the last block when a short custom template ends early.
+        blocks.append((sleep - 30, sleep, "Wind-down"))
     if blocks and blocks[-1][1] > sleep:
         blocks[-1] = (blocks[-1][0], sleep, blocks[-1][2])
     return blocks
