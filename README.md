@@ -1,12 +1,12 @@
 ![banner](assets/banner.png)
 
-# Maxi
+# Maxi-Schedule-Generator
 Maxi is a personalized CLI based schedule generator.
 
-# What makes Maxi Different?
+# What makes Maxi-Schedule-Generator Different?
 Maxi takes into account several different factors and places an emphasis on a flexible schedule to avoid micromanaging and other unhealthy or unmanageable habits.
 
-# What does Maxi use?
+# What does Maxi-Schedule-Generator use?
 1. Age
 2. Habits (You wish to achieve)
 3. Situation (Your personal situation and what you require)
