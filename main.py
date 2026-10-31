@@ -43,12 +43,23 @@ DEFAULTS = {
 
 
 def parse_time(text):
-    # I do not range check here. "25:99" parses into a number like any
-    # other time, and a string with no colon raises ValueError. main()
-    # turns that ValueError into a short error, but the out of range
-    # values pass through silently and fmt() below wraps them.
-    hours, minutes = text.strip().split(":")
-    return int(hours) * 60 + int(minutes)
+    # I check the shape and the range here, at the one place every
+    # wake and sleep value passes through. Before this check "25:99"
+    # parsed like any other time and fmt() wrapped it, so the printed
+    # schedule quietly started at 02:39 for an answer nobody typed.
+    # int() sits in a try because a value like a superscript digit
+    # passes a digit test and still fails to convert.
+    parts = text.strip().split(":")
+    if len(parts) != 2:
+        raise ValueError(f"invalid time {text!r}: expected HH:MM in 24 hour time")
+    try:
+        hours, minutes = int(parts[0]), int(parts[1])
+    except ValueError:
+        raise ValueError(f"invalid time {text!r}: expected HH:MM in 24 hour time") from None
+    if not 0 <= hours <= 23 or not 0 <= minutes <= 59:
+        raise ValueError(
+            f"invalid time {text!r}: hour must be 0 to 23 and minute 0 to 59")
+    return hours * 60 + minutes
 
 
 def fmt(minutes):
@@ -95,16 +106,22 @@ def load_answers_file(path):
 
 def focus_cycle(style):
     """(focus_minutes, break_minutes) for the repeating focus cycle."""
-    # An unknown style falls back to pomodoro without a word. I would
-    # rather give the user a normal day than fail over a typo, but it
-    # does mean a misspelled style is never reported.
+    # An unknown style raises instead of falling back to pomodoro
+    # without a word. The fallback hid typos: "pomodoroo" in an
+    # answers file built a pomodoro day and the user never learned
+    # their answer was not read. main() reports the ValueError with
+    # the style named, the same as for a bad time.
     # large has a break length of 0 because its break is a separate
     # one time 90 minute block in build_schedule, not part of the cycle.
-    return {
+    cycles = {
         "pomodoro": (25, 5),
         "flowmodoro": (50, 10),
         "large": (120, 0),
-    }.get(style, (25, 5))
+    }
+    if style not in cycles:
+        raise ValueError(
+            f"unknown break style {style!r}: use pomodoro, flowmodoro, or large")
+    return cycles[style]
 
 
 def build_schedule(answers):
@@ -257,29 +274,51 @@ def main():
     parser.add_argument("--output", default=OUTPUT_FILE, help="output file (default scheduleai.txt)")
     args = parser.parse_args()
 
-    if args.answers:
-        answers = load_answers_file(args.answers)
-    else:
-        answers = interview()
+    # The answers step is wrapped like the build step below it. A
+    # missing --answers file, a file that is not UTF-8 text, and an
+    # interview cut off by EOF or Ctrl-C each get a short message and
+    # exit 1. Before this wrap all three died with a traceback.
+    try:
+        if args.answers:
+            answers = load_answers_file(args.answers)
+        else:
+            answers = interview()
+    except OSError as error:
+        print(f"Could not read answers file {args.answers}: {error}", file=sys.stderr)
+        return 1
+    except UnicodeDecodeError as error:
+        print(f"Answers file {args.answers} is not valid UTF-8 text: {error}",
+              file=sys.stderr)
+        return 1
+    except (EOFError, KeyboardInterrupt):
+        print("\nNo schedule built: the interview ended before it finished.",
+              file=sys.stderr)
+        return 1
     # I check the template path here, before building, so a missing
     # file gets named in its own message. Inside build_schedule the
     # same failure would surface as a bare file error with no context.
     if answers.get("template") and not os.path.exists(answers["template"]):
         print(f"Template file not found: {answers['template']}", file=sys.stderr)
         return 1
-    # Only build_schedule is wrapped. A missing --answers file or an
-    # input stream that ends mid interview still dies with a traceback
-    # above this point. I know, and I have left it for now.
+    # OSError is in this catch because build_schedule opens the
+    # template file itself. A template path that exists but cannot be
+    # read as a file, a directory for example, failed the existence
+    # check above in the sense that it exists, and then died here
+    # with a traceback before this catch named it.
     try:
         blocks = build_schedule(answers)
-    except (ValueError, KeyError) as error:
+    except (ValueError, KeyError, OSError) as error:
         print(f"Could not build a schedule from those answers: {error}", file=sys.stderr)
         return 1
     text = render(answers, blocks)
     print()
     print(text)
-    with open(args.output, "w", encoding="utf-8") as handle:
-        handle.write(text)
+    try:
+        with open(args.output, "w", encoding="utf-8") as handle:
+            handle.write(text)
+    except OSError as error:
+        print(f"Could not write output file {args.output}: {error}", file=sys.stderr)
+        return 1
     print(f"Saved to {args.output}")
     return 0
 

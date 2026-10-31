@@ -28,7 +28,9 @@ Requires Python 3 only (standard library, nothing to install, no API key).
 python3 main.py
 ```
 
-Maxi asks the ten questions above, prints your schedule, and saves the answers plus the schedule to `scheduleai.txt`. Generation is local and rule-based: wake/sleep times anchor the day, meals are placed adaptively or at fixed times, habits and a health block are woven between focus blocks, breaks follow the style you pick (pomodoro 25/5, flowmodoro 50/10, or one large break), the adaptability score sets how much buffer sits between blocks, and a 30 minute wind-down block closes the day at the sleep time. Sleep times at or before the wake time are treated as the next day. Invalid times or invalid template numbers are reported with a short error message instead of a traceback.
+Maxi asks the ten questions above, prints your schedule, and saves the answers plus the schedule to `scheduleai.txt`. Generation is local and rule-based: wake/sleep times anchor the day, meals are placed adaptively or at fixed times, habits and a health block are woven between focus blocks, breaks follow the style you pick (pomodoro 25/5, flowmodoro 50/10, or one large break), the adaptability score sets how much buffer sits between blocks, and a 30 minute wind-down block closes the day at the sleep time. Sleep times at or before the wake time are treated as the next day.
+
+Input I cannot use gets a short error message and exit 1, never a traceback: a time that is not `HH:MM` in 24 hour time or is out of range (hour 0 to 23, minute 0 to 59), an unknown break style, an invalid template number, a missing or non-UTF-8 answers file, a template path that is not a readable file, and an output path that cannot be written. Ending the interview early with EOF or Ctrl-C also exits 1 with a short note, and no schedule file is written. Two answers are read leniently on purpose: an adaptability value outside 0 to 10 is clamped to that range, and a non-numeric adaptability falls back to 5.
 
 Non-interactive use, and custom templates:
 
@@ -41,9 +43,24 @@ where `answers.txt` holds one `key: value` line per factor (keys: age, habits, s
 
 Run `python3 main.py --help` for the full option list.
 
+## Tests
+
+```
+python3 -m unittest
+```
+
+21 tests in `test_main.py`: time parsing and range checks, the three
+break styles and the unknown style error, schedule building (day
+boundaries, habit order, the single large break, overnight days), the
+answers file reader, and the command line paths (missing and non-UTF-8
+answers files, out of range times, an interview ended by EOF, output
+and template paths that are directories, a normal run, and a template
+run).
+
 ## Files
 
 - `main.py`: the program.
+- `test_main.py`: the test suite.
 - `assets/logo.png` and `assets/banner.png`: project branding.
 
 ## License
