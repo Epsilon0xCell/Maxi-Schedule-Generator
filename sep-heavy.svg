@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 34" role="img" aria-label="Grit band: coarse speckle, medium grain, smooth polish, between walnut rules">
+<rect y="2" width="1200" height="2.6" fill="#5e3e22"/>
+<g>
+<rect x="60" y="10" width="340" height="14" fill="#767e85"/>
+<g fill="#59636c"><circle cx="100" cy="17" r="2.4"/><circle cx="170" cy="14" r="2"/><circle cx="240" cy="19" r="2.6"/><circle cx="310" cy="15" r="2"/><circle cx="370" cy="18" r="2.4"/></g>
+<rect x="430" y="10" width="340" height="14" fill="#8a939a"/>
+<g fill="#767e85"><circle cx="480" cy="17" r="1.4"/><circle cx="560" cy="15" r="1.2"/><circle cx="640" cy="18" r="1.4"/><circle cx="720" cy="16" r="1.2"/></g>
+<rect x="800" y="10" width="340" height="14" fill="#a7b0b5"/>
+<rect x="800" y="12" width="340" height="3" fill="#ccd3d6"/>
+</g>
+<rect y="29" width="1200" height="2.6" fill="#5e3e22"/>
+</svg>

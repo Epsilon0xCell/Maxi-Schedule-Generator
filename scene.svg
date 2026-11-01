@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" role="img" aria-label="The sharpening stall bench: a blade working a whetstone, a second stone soaking, a strop swaying slightly, tomatoes gaining a slice">
+<rect width="1200" height="340" fill="#ddd6c2"/>
+<rect width="1200" height="86" fill="#cfd4d2">
+<animate attributeName="fill" values="#c3cbce;#e6ddba;#e6ddba" keyTimes="0;0.5;1" dur="60s" repeatCount="1" fill="freeze"/>
+</rect>
+<g fill="#b3a284"><polygon points="60,86 190,86 176,128 74,128"/><polygon points="330,86 460,86 446,128 344,128"/><polygon points="600,86 730,86 716,128 614,128"/><polygon points="870,86 1000,86 986,128 884,128"/></g>
+<!-- soaking stone with rising bubbles -->
+<rect x="660" y="196" width="210" height="52" fill="#46545e"/>
+<rect x="668" y="188" width="194" height="18" fill="#7e97a0"/>
+<g fill="#d8e4e6">
+<circle cx="706" cy="238" r="4"><animate attributeName="cy" values="238;206" dur="3.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.9;0" keyTimes="0;0.3;1" dur="3.4s" repeatCount="indefinite"/></circle>
+<circle cx="790" cy="240" r="3"><animate attributeName="cy" values="240;208" dur="4.3s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.9;0" keyTimes="0;0.3;1" dur="4.3s" begin="1.2s" repeatCount="indefinite"/></circle>
+<circle cx="838" cy="239" r="3.4"><animate attributeName="cy" values="239;207" dur="3.9s" begin="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.9;0" keyTimes="0;0.3;1" dur="3.9s" begin="2s" repeatCount="indefinite"/></circle>
+</g>
+<!-- the working stone and the blade in its steady stroke -->
+<rect x="180" y="206" width="330" height="42" fill="#59636c"/>
+<rect x="180" y="200" width="330" height="12" fill="#79848c"/>
+<g>
+<polygon points="0,0 190,16 186,28 4,14" fill="#bcc2c8" stroke="#767e85" stroke-width="1.6"/>
+<line x1="6" y1="3" x2="184" y2="17" stroke="#d8942c" stroke-width="2.6"/>
+<polygon points="186,16 238,28 232,42 186,28" fill="#5e3e22"/>
+<animateTransform attributeName="transform" type="translate" values="196,178; 268,186; 196,178" keyTimes="0;0.55;1" dur="3.2s" repeatCount="indefinite"/>
+</g>
+<g fill="#cfe0e4">
+<circle cx="486" cy="196" r="3.4"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.7;0.8;1" dur="12.8s" repeatCount="indefinite"/></circle>
+<circle cx="502" cy="188" r="2.6"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.72;0.82;1" dur="12.8s" repeatCount="indefinite"/></circle>
+<circle cx="470" cy="186" r="2.4"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.74;0.84;1" dur="12.8s" repeatCount="indefinite"/></circle>
+</g>
+<!-- strop swaying by a degree or less -->
+<g>
+<polygon points="1052,120 1078,120 1082,238 1048,238" fill="#92683e" stroke="#604224" stroke-width="2"/>
+<animateTransform attributeName="transform" type="rotate" values="0 1065 120; 0.9 1065 120; 0 1065 120; -0.9 1065 120; 0 1065 120" dur="9s" repeatCount="indefinite"/>
+</g>
+<line x1="1065" y1="86" x2="1065" y2="120" stroke="#604224" stroke-width="4"/>
+<!-- tomatoes at the left, one gaining a thin slice per full set of strokes -->
+<g>
+<ellipse cx="86" cy="272" rx="30" ry="26" fill="#c4442c"/><ellipse cx="140" cy="278" rx="27" ry="23" fill="#c4442c"/>
+<polygon points="76,248 94,248 85,258" fill="#466e34"/><polygon points="131,256 147,256 139,265" fill="#466e34"/>
+<g opacity="0"><ellipse cx="196" cy="272" rx="25" ry="22" fill="#d8542f"/><path d="M214,254 q20,20 2,40" stroke="#e88a63" stroke-width="5" fill="none"/>
+<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.6;0.66;1" dur="25.6s" repeatCount="indefinite"/></g>
+</g>
+<rect y="300" width="1200" height="40" fill="#5e3e22"/>
+<line x1="0" y1="300" x2="1200" y2="300" stroke="#96683c" stroke-width="3"/>
+</svg>

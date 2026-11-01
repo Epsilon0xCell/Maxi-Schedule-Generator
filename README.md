@@ -1,7 +1,15 @@
-![banner](assets/banner.png)
+![Intro: the stall before opening, the fine stone holding the whole unwritten day in its water](intro-banner.png)
+
 
 # Maxi-Schedule-Generator
+
+![Banner](banner.png)
+
+![Scene](scene.svg)
 Maxi is a personalized CLI based schedule generator.
+
+
+![Separator](sep-heavy.svg)
 
 # What makes Maxi-Schedule-Generator Different?
 Maxi takes into account several different factors and places an emphasis on a flexible schedule to avoid micromanaging and other unhealthy or unmanageable habits.
@@ -19,6 +27,8 @@ Maxi takes into account several different factors and places an emphasis on a fl
 10. Adaptive Breaks (Whether you want one large break or pomodoro/flowmodoro breaks)
 
 All of your responses to this will be saved to a document titled "scheduleai.txt" as well as the schedule generated, unless you pick a different output file with `--output`.
+
+> **Bench note, tucked under a stone corner:** the generated day is a guide with slack built in, not an order to be obeyed minute by minute. The adaptability score sets how much buffer sits between blocks, and that empty space is part of the design.
 
 # How to run
 
