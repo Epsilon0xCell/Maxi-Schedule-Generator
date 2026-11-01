@@ -3,164 +3,100 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maxi Schedule Generator: what it is, how it runs, where it stops</title>
-<meta name="description" content="All of your responses to this will be saved to a document titled &quot;scheduleai.txt&quot; as well as the schedule generated, unless you pick a different outpu">
+<title>Maxi-Schedule-Generator: the sharpener's order book</title>
+<meta name="description" content="Maxi is a command line schedule generator that builds a flexible personal day from age, habits, situation, sleep and wake times, and a chosen adaptability level, and deliberately avoids micromanaging the hours it proposes.">
 <style>
-:root {
-  --bg: #241a10; --panel: #362818; --ink: #f4ead2;
-  --mut: #483620;
-  --acc: #eeba5c; --acc2: #96b296;
-  --line: #362818;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink);
-  font-family: 'Book Antiqua', Georgia, serif; line-height: 1.55; }
-code, pre, .mono { font-family: 'Andale Mono', monospace; }
-a { color: var(--acc2); }
-.hero { padding: 3rem 6vw 1rem; }
-.hero img.banner { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; }
-.logo { width: 92px; height: 92px; border-radius: 18px;
-  border: 1px solid var(--line); }
-h1 { font-size: 2.4rem; margin: 0.4em 0 0.1em; }
-h2 { border-bottom: 2px solid var(--acc); padding-bottom: 0.2em;
-  margin-top: 2em; }
-.lede { font-size: 1.15rem; max-width: 62ch; }
-main { padding: 0 6vw 3rem; max-width: 1180px; margin: 0 auto; }
-.grid { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.card { background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; padding: 1rem 1.2rem; }
-.card.pop { animation: rise 0.7s ease both; }
-@keyframes rise { from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; } }
-pre.code { background: #101014; color: #e8e6df; padding: 1rem 1.2rem;
-  border-radius: 12px; overflow-x: auto; font-size: 0.86rem;
-  border-left: 5px solid var(--acc); }
-table { border-collapse: collapse; width: 100%; }
-td, th { border-bottom: 1px solid var(--line); padding: 0.45rem 0.6rem;
-  text-align: left; }
-.shots { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.shots img { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; background: #f4f1e8; }
-footer { padding: 2rem 6vw; border-top: 1px solid var(--line);
-  color: var(--mut); }
-.rail { display: flex; gap: 1.2rem; align-items: flex-start; }
-.rail nav { position: sticky; top: 1rem; min-width: 180px; }
-@media (max-width: 760px) { .rail { flex-direction: column; }
-  .rail nav { position: static; } }
-@media (prefers-reduced-motion: reduce) {
-  .card.pop { animation: none; } * { scroll-behavior: auto; } }
+@font-face{font-family:'Allura';src:url('fonts/Allura-Regular.ttf') format('truetype')}
+@font-face{font-family:'Cabin';src:url('fonts/Cabin.ttf') format('truetype')}
+*{box-sizing:border-box}
+body{margin:0;background:#ece1c8;color:#33241a;font-family:'Cabin',sans-serif;line-height:1.62}
+header.hero{max-width:920px;margin:0 auto;padding:34px 22px 4px}
+header.hero img{width:100%;height:auto;display:block}
+h1{font-family:'Allura',cursive;font-weight:400;font-size:3.1rem;margin:.3em 0 .05em;color:#4a3016}
+.lede{font-size:1.1rem;max-width:63ch}
+main{max-width:920px;margin:0 auto;padding:6px 22px 44px}
+h2{font-family:'Allura',cursive;font-weight:400;font-size:2.2rem;color:#4a3016;margin:1.3em 0 .25em}
+.stage{display:flex;gap:10px;margin:10px 0 2px}
+.stage i{display:block;width:26px;height:15px;background:#767e85}
+.stage i:nth-child(2){background:#8a939a}.stage i:nth-child(3){background:#a7b0b5}
+.slip{background:#f4ecd8;border-top:3px solid #5e3e22;padding:16px 22px;margin:14px 0;position:relative}
+.slip::before{content:'';position:absolute;left:12px;top:8px;width:11px;height:11px;border:2px solid #8a6a42;border-radius:50%}
+.row{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid #d8cbae;padding:7px 2px 7px 18px}
+.day{display:flex;gap:16px;border-bottom:1px solid #d8cbae;padding:6px 2px}
+.day b{font-variant-numeric:tabular-nums;min-width:52px;color:#4a3016}
+.day .slack{flex:1;background:linear-gradient(180deg,#c9cfd2,#aeb6ba);border-radius:2px;color:#4a4238;font-style:italic;padding:0 10px}
+.stonebtn{display:inline-block;background:linear-gradient(180deg,#79848c,#59636c);color:#f4ecd8;font-family:'Cabin',sans-serif;font-weight:700;padding:.5em 1.3em;border:0;border-radius:5px;border-bottom:3px solid #98a2a6;text-decoration:none;position:relative;transition:transform .1s}
+.stonebtn:hover{filter:brightness(1.14)}
+.stonebtn:active{transform:translateY(2px);filter:brightness(.88)}
+.stonebtn:focus-visible{outline:2px solid #d8942c;outline-offset:3px}
+a.slice{color:#7a4a12;text-decoration:none}
+a.slice::before{content:'';display:inline-block;width:.6em;height:.6em;background:#f4ecd8;border:2px solid #c4442c;border-radius:50%;margin-right:.45em;box-shadow:inset 0 0 0 2px #f4ecd8,inset 0 0 0 3.4px #d8942c;vertical-align:-.04em}
+a.slice:hover{text-decoration:underline}
+a.slice:hover::before{background:#d8942c}
+.grit{border:0;height:16px;margin:30px 0 2px;background:linear-gradient(90deg,#767e85 0 33%,#8a939a 33% 66%,#a7b0b5 66% 100%);box-shadow:0 -2.6px 0 #5e3e22,0 2.6px 0 #5e3e22}
+pre{background:#3c2715;color:#f4ecd8;padding:16px 20px;overflow-x:auto;font-family:Menlo,monospace}
+footer{max-width:920px;margin:0 auto;padding:4px 22px 40px;color:#6a5638;font-size:.93rem}
 </style>
 </head>
-<body class="layout-split">
-<!-- This page exists for Maxi-Schedule-Generator alone: the layout (split-hero),
-     the colors, and the type were picked for this project, not
-     shared with the other project pages. The code block below is
-     copied from the file it names, line for line. If it looks
-     plain, that is because the project is plain, and I would
-     rather the page match the project than dress it up. The one
-     thing I will not do here is oversell: what this project does
-     not do is stated on the page, not hidden from it. -->
+<body>
 <header class="hero">
-  <img class="logo" src="assets/logo.png" alt="Maxi Schedule Generator logo">
-  <img class="banner" src="assets/banner.png" alt="">
-  <h1>Maxi Schedule Generator</h1>
-  <p class="mono"><a href="https://github.com/Epsilon0xCell/Maxi-Schedule-Generator">github.com/Epsilon0xCell/Maxi-Schedule-Generator</a></p>
+<img src="https://raw.githubusercontent.com/Epsilon0xCell/Maxi-Schedule-Generator/main/intro-banner.png" alt="The stall before opening, the fine stone holding the morning in its water">
+<h1>Maxi-Schedule-Generator</h1>
+<p class="lede">Maxi is a command line schedule generator that builds a flexible personal day from a person's age, habits, current situation, sleep and wake times, and a chosen adaptability level, and it deliberately avoids micromanaging the hours it proposes. This site is the sharpener's order book: the day is entered in the order the work will actually happen.</p>
+<p><a class="stonebtn" href="https://github.com/Epsilon0xCell/Maxi-Schedule-Generator">The repo on GitHub</a> <a class="stonebtn" href="#run">Running Maxi</a></p>
 </header>
-
 <main>
-  <section class="rail">
-    <nav aria-label="on this page">
-      <p class="mono"><a href="#run">Run it</a><br>
-      <a href="#files">The files</a><br>
-      <a href="#sheets">The sheets</a><br>
-      <a href="https://github.com/Epsilon0xCell/Maxi-Schedule-Generator">The repo</a></p>
-    </nav>
-    <div>
-      <p class="lede">All of your responses to this will be saved to a document titled &quot;scheduleai.txt&quot; as well as the schedule generated, unless you pick a different output file with --output.</p>
-      <div class="grid">
-        <div class="card pop"><h3>What it is</h3>
-          <p>Maxi Schedule Generator: 5 files, 339 counted
-          lines across Python 288, Markdown 51. One job, done in the
-          open, in files you can read.</p></div>
-        <div class="card pop"><h3>The biggest piece</h3>
-          <p><code>main.py</code> carries the most
-          lines. If the project grows, that file is where the growth
-          lands first, for better or worse.</p></div>
-        <div class="card pop"><h3>The honest gap</h3>
-          <p>No test files yet. That is the honest gap, and the roadmap in the visuals folder says what the first one should cover.</p></div>
-      </div>
-      <section id="run">
-        <h2>Run it</h2>
-        <p>The repo README has the exact commands for this one. The
-        shape is the shape for most of my projects: clone it, read the
-        top file first so you know what will happen, then run it on
-        something you do not mind breaking.</p>
-        <p class="mono">$ git clone https://github.com/Epsilon0xCell/Maxi-Schedule-Generator.git<br>$ cd Maxi-Schedule-Generator</p>
-      </section>
-      
-  <section aria-label="real code">
-    <h2>The code, as it sits in the repo</h2>
-    <p>From <code>main.py</code>, line 43 on. I did
-    not tidy it for the page. What you see is what the file has.</p>
-    <pre class="code"><code>
-
-def parse_time(text):
-    # I do not range check here. &quot;25:99&quot; parses into a number like any
-    # other time, and a string with no colon raises ValueError. main()
-    # turns that ValueError into a short error, but the out of range
-    # values pass through silently and fmt() below wraps them.
-    hours, minutes = text.strip().split(&quot;:&quot;)
-    return int(hours) * 60 + int(minutes)
-
-
-def fmt(minutes):
-    # The modulo is what makes an overnight day readable: a block at
-    # minute 1500 prints as 01:00, not 25:00. It also means the printed
-    # schedule never shows which side of midnight a block sits on.
-    minutes %= 24 * 60
-    return f&quot;{minutes // 60:02d}:{minutes % 60:02d}&quot;
-
-
-def interview():
-    answers = {}
-    print(&quot;Maxi: personalized schedule generator&quot;)</code></pre>
-  </section>
-      <section id="files">
-        <h2>The files that matter</h2>
-        <table><tr><th>File</th><th>Lines</th></tr>
-        <tr><td><code>main.py</code></td><td>288</td></tr>
-        <tr><td><code>README.md</code></td><td>51</td></tr>
-        <tr><td><code>assets/banner.png</code></td><td>0</td></tr>
-        <tr><td><code>assets/logo.png</code></td><td>0</td></tr>
-        <tr><td><code>LICENSE</code></td><td>0</td></tr>
-        </table>
-        <p>Names doing the work: <span class="mono">parse_time, fmt, interview, load_answers_file, focus_cycle, build_schedule, render, main</span>.</p>
-      </section>
-      <section id="sheets">
-        <h2>Drawn by hand</h2>
-        <p>I sketch my projects on notebook paper so I have to
-        understand them well enough to draw them. The full set,
-        with the counts and how they were counted, is the
-        <a href="https://github.com/Epsilon0xCell/Maxi-Schedule-Generator/tree/main/Maxi-Schedule-Generator-Visuals">Maxi-Schedule-Generator-Visuals</a>
-        folder in the repo. Nothing is drawn over the binder holes.
-        That is a rule, not a style.</p>
-        <div class="shots">
-          <img src="assets/architecture.png" alt="Hand drawn architecture sheet for Maxi Schedule Generator">
-          <img src="assets/flowchart.png" alt="Hand drawn flowchart sheet for Maxi Schedule Generator">
-          <img src="assets/product-map.png" alt="Hand drawn product map sheet for Maxi Schedule Generator">
-        </div>
-      </section>
-    </div>
-  </section>
+<hr class="grit">
+<h2>Page one: the intake questions, asked at the counter</h2>
+<div class="slip">
+<div class="row"><span>Age</span><span>factor 1</span></div>
+<div class="row"><span>Habits you wish to achieve</span><span>factor 2</span></div>
+<div class="row"><span>Situation: your personal situation and what you require</span><span>factor 3</span></div>
+<div class="row"><span>Sleep and wake times</span><span>factor 4</span></div>
+<div class="row"><span>Adaptability, on a scale of 0 to 10</span><span>factor 5</span></div>
+<div class="row"><span>The custom schedule template, or your own if you are a power user</span><span>factor 6</span></div>
+<div class="row"><span>What is healthy for you at your age, based on your requirements</span><span>factor 7</span></div>
+<div class="row"><span>Conflicts from earlier schedules, for example micromanaging or demotivation</span><span>factor 8</span></div>
+<div class="row"><span>Adaptive eating times, if deciding when to eat is difficult</span><span>factor 9</span></div>
+<div class="row"><span>Adaptive breaks: one large break, or pomodoro and flowmodoro breaks</span><span>factor 10</span></div>
+<p>The day is shaped around the sleeper first and the tasks second: wake and sleep times anchor everything else. All answers and the generated schedule are saved to a document titled scheduleai.txt, unless you pick a different output file with --output.</p>
+</div>
+<hr class="grit">
+<h2>Page two: the method, worked as a grit sequence</h2>
+<div class="stage" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="slip">
+<p><b>Coarse pass.</b> The non negotiable blocks are fixed first: sleep, work or study, meals. Meals are placed adaptively or at fixed times, as the intake answered.</p>
+<p><b>Middle pass.</b> Flexible activities are arranged in the gaps: habits and a health block woven between focus blocks, breaks following the chosen style, pomodoro 25 and 5, flowmodoro 50 and 10, or one large break.</p>
+<p><b>Fine pass.</b> Transitions are smoothed and breathing room is left. The adaptability score sets how much buffer sits between blocks, and Maxi leaves slack on purpose rather than packing every minute. A 30 minute wind down block closes the day at the sleep time, and sleep times at or before the wake time are treated as the next day.</p>
+</div>
+<hr class="grit">
+<h2>Page three: a worked example day, on an order slip</h2>
+<div class="slip">
+<div class="day"><b>07:00</b><span>Wake. The day opens here, not at the first task.</span></div>
+<div class="day"><b>07:30</b><span>Breakfast, placed adaptively.</span></div>
+<div class="day"><b>08:00</b><span>Focus block, pomodoro cycles of 25 and 5.</span></div>
+<div class="day"><b>10:00</b><span class="slack">Intentional space. Nothing is scheduled here on purpose.</span></div>
+<div class="day"><b>10:30</b><span>Habit block, from the intake list.</span></div>
+<div class="day"><b>12:30</b><span>Lunch.</span></div>
+<div class="day"><b>14:00</b><span>Focus block, with a health block woven in.</span></div>
+<div class="day"><b>18:00</b><span>Dinner.</span></div>
+<div class="day"><b>19:00</b><span class="slack">Intentional space, kept empty by the fine pass.</span></div>
+<div class="day"><b>22:30</b><span>Wind down, 30 minutes, closing at the sleep time of 23:00.</span></div>
+<p>An illustration of the shape Maxi builds from the rules above, not a captured run. The generated day is a guide with slack built in, not an order to be obeyed minute by minute.</p>
+</div>
+<hr class="grit">
+<h2 id="run">Closing page: running Maxi locally</h2>
+<p>Requires Python 3 only: standard library, nothing to install, no API key.</p>
+<pre>python3 main.py
+python3 main.py --answers answers.txt
+python3 main.py --answers answers.txt --output my-schedule.txt</pre>
+<p>The answers file holds one key: value line per factor (keys: age, habits, situation, wake, sleep, adaptability, health, conflicts, adaptive_eating, break_style, template). A template file lists your own blocks, one per line as minutes | label, and replaces the built in block sequence; template lines with a duration of zero or less are skipped. Run python3 main.py --help for the full option list.</p>
+<p>Input Maxi cannot use gets a short error message and exit 1, never a traceback: a time that is not HH:MM in 24 hour time or is out of range, an unknown break style, an invalid template number, a missing or non UTF 8 answers file, an unreadable template path, and an output path that cannot be written. Ending the interview early with EOF or Ctrl-C also exits 1, and no schedule file is written. Two answers are read leniently on purpose: an adaptability value outside 0 to 10 is clamped to that range, and a non numeric adaptability falls back to 5.</p>
+<p>Tests: python3 -m unittest runs 21 tests in test_main.py, covering time parsing, the three break styles, schedule building, the answers file reader, and the command line paths.</p>
+<p><a class="slice" href="https://github.com/Epsilon0xCell/Maxi-Schedule-Generator/tree/main/Maxi-Schedule-Generator-Visuals">The visuals folder in the repo</a></p>
 </main>
 <footer>
-  <p>Maxi Schedule Generator is one of my projects. This page was written
-  from the repo itself on 2026-10-30: the counts are the
-  repo's counts, the code is the repo's code, and the gaps are the
-  repo's gaps.</p>
+<p>Files: main.py, test_main.py, assets, and LICENSE (MIT). Fonts: Allura for display and Cabin for text, both SIL Open Font License 1.1, license texts beside the font files. The lettering reference named in the project prose was set aside as a mismatch and is not embedded.</p>
 </footer>
 </body>
 </html>
