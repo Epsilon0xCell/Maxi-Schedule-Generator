@@ -1,9 +1,11 @@
-![Intro: the stall before opening, the fine stone holding the whole unwritten day in its water](intro-banner.png)
+![Intro: the same departure board a moment later, a dark band of unflipped modules opening through the middle of the cream day while the blocks on either side reshuffle, one green lamp lit, the platform edge below](intro-banner.png)
 
 
 # Maxi-Schedule-Generator
 
-![Banner](banner.png)
+<p align="center"><img src="logo.png" alt="Maxi-Schedule-Generator logo: a single split-flap module photographed close, its cream flap caught half turned between two blank positions in a black surround, one small green lamp lit beside it" width="200"></p>
+
+![Banner: a wide black split-flap departure board whose cream flaps have settled into a varied pattern of long and short blocks across the middle, dark unflipped modules at both sides, a few flaps still turning, one small green lamp lit, a grey platform edge below](banner.png)
 
 ![Scene](scene.svg)
 Maxi is a personalized CLI based schedule generator.
@@ -28,7 +30,7 @@ Maxi takes into account several different factors and places an emphasis on a fl
 
 All of your responses to this will be saved to a document titled "scheduleai.txt" as well as the schedule generated, unless you pick a different output file with `--output`.
 
-> **Bench note, tucked under a stone corner:** the generated day is a guide with slack built in, not an order to be obeyed minute by minute. The adaptability score sets how much buffer sits between blocks, and that empty space is part of the design.
+> **Board note, chalked under the day's last flap:** the generated day is a guide with slack built in, not an order to be obeyed minute by minute. The adaptability score sets how much buffer sits between blocks, and that empty space is part of the design.
 
 # How to run
 
