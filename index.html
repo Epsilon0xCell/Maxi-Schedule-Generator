@@ -3,51 +3,53 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maxi-Schedule-Generator: the sharpener's order book</title>
+<title>Maxi-Schedule-Generator: the departure board</title>
 <meta name="description" content="Maxi is a command line schedule generator that builds a flexible personal day from age, habits, situation, sleep and wake times, and a chosen adaptability level, and deliberately avoids micromanaging the hours it proposes.">
 <style>
-@font-face{font-family:'Allura';src:url('fonts/Allura-Regular.ttf') format('truetype')}
-@font-face{font-family:'Cabin';src:url('fonts/Cabin.ttf') format('truetype')}
+@font-face{font-family:'Space Mono';src:url('fonts/SpaceMono-Regular.ttf') format('truetype');font-weight:400}
+@font-face{font-family:'Space Mono';src:url('fonts/SpaceMono-Bold.ttf') format('truetype');font-weight:700}
+@font-face{font-family:'Inter';src:url('fonts/Inter-Regular.ttf') format('truetype');font-weight:400}
+@font-face{font-family:'Inter';src:url('fonts/Inter-Bold.ttf') format('truetype');font-weight:700}
 *{box-sizing:border-box}
-body{margin:0;background:#ece1c8;color:#33241a;font-family:'Cabin',sans-serif;line-height:1.62}
+body{margin:0;background:#101114;color:#262019;font-family:'Inter',sans-serif;line-height:1.6}
 header.hero{max-width:920px;margin:0 auto;padding:34px 22px 4px}
-header.hero img{width:100%;height:auto;display:block}
-h1{font-family:'Allura',cursive;font-weight:400;font-size:3.1rem;margin:.3em 0 .05em;color:#4a3016}
-.lede{font-size:1.1rem;max-width:63ch}
+header.hero img{width:100%;height:auto;display:block;border:5px solid #26282e}
+h1{font-family:'Space Mono',monospace;font-weight:700;font-size:2.2rem;margin:.35em 0 .05em;color:#f2ecd9;letter-spacing:.01em}
+.lede{font-size:1.08rem;max-width:63ch;color:#c9cdd2}
 main{max-width:920px;margin:0 auto;padding:6px 22px 44px}
-h2{font-family:'Allura',cursive;font-weight:400;font-size:2.2rem;color:#4a3016;margin:1.3em 0 .25em}
+h2{font-family:'Space Mono',monospace;font-weight:700;font-size:1.35rem;color:#f2ecd9;margin:1.4em 0 .3em}
 .stage{display:flex;gap:10px;margin:10px 0 2px}
-.stage i{display:block;width:26px;height:15px;background:#767e85}
-.stage i:nth-child(2){background:#8a939a}.stage i:nth-child(3){background:#a7b0b5}
-.slip{background:#f4ecd8;border-top:3px solid #5e3e22;padding:16px 22px;margin:14px 0;position:relative}
-.slip::before{content:'';position:absolute;left:12px;top:8px;width:11px;height:11px;border:2px solid #8a6a42;border-radius:50%}
-.row{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid #d8cbae;padding:7px 2px 7px 18px}
-.day{display:flex;gap:16px;border-bottom:1px solid #d8cbae;padding:6px 2px}
-.day b{font-variant-numeric:tabular-nums;min-width:52px;color:#4a3016}
-.day .slack{flex:1;background:linear-gradient(180deg,#c9cfd2,#aeb6ba);border-radius:2px;color:#4a4238;font-style:italic;padding:0 10px}
-.stonebtn{display:inline-block;background:linear-gradient(180deg,#79848c,#59636c);color:#f4ecd8;font-family:'Cabin',sans-serif;font-weight:700;padding:.5em 1.3em;border:0;border-radius:5px;border-bottom:3px solid #98a2a6;text-decoration:none;position:relative;transition:transform .1s}
-.stonebtn:hover{filter:brightness(1.14)}
-.stonebtn:active{transform:translateY(2px);filter:brightness(.88)}
-.stonebtn:focus-visible{outline:2px solid #d8942c;outline-offset:3px}
-a.slice{color:#7a4a12;text-decoration:none}
-a.slice::before{content:'';display:inline-block;width:.6em;height:.6em;background:#f4ecd8;border:2px solid #c4442c;border-radius:50%;margin-right:.45em;box-shadow:inset 0 0 0 2px #f4ecd8,inset 0 0 0 3.4px #d8942c;vertical-align:-.04em}
+.stage i{display:block;width:26px;height:15px;background:#3a3d44}
+.stage i:nth-child(2){background:#555a63}.stage i:nth-child(3){background:#787f89}
+.slip{background:#f2ecd9;border-top:4px solid #26282e;padding:16px 22px;margin:14px 0;position:relative;box-shadow:6px 6px 0 rgba(0,0,0,.45)}
+.slip::before{content:'';position:absolute;left:12px;top:8px;width:11px;height:11px;border:2px solid #8a8574;border-radius:50%}
+.row{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid #d5ccb2;padding:7px 2px 7px 18px}
+.day{display:flex;gap:16px;border-bottom:1px solid #d5ccb2;padding:6px 2px}
+.day b{font-family:'Space Mono',monospace;font-variant-numeric:tabular-nums;min-width:52px;color:#101114}
+.day .slack{flex:1;background:linear-gradient(180deg,#43464d,#33363d);border-radius:2px;color:#e8e2cd;font-style:italic;padding:0 10px}
+.stonebtn{display:inline-block;background:#26282e;color:#f2ecd9;font-family:'Space Mono',monospace;font-weight:700;padding:.5em 1.2em;border:2px solid #4a4e57;border-bottom:4px solid #37c978;border-radius:3px;text-decoration:none;position:relative;transition:transform .1s}
+.stonebtn:hover{border-bottom-color:#f2ecd9}
+.stonebtn:active{transform:translateY(2px)}
+.stonebtn:focus-visible{outline:2px solid #37c978;outline-offset:3px}
+a.slice{color:#a8d8bc;text-decoration:none}
+a.slice::before{content:'';display:inline-block;width:.55em;height:.55em;background:#37c978;border-radius:50%;margin-right:.45em;vertical-align:-.02em}
 a.slice:hover{text-decoration:underline}
-a.slice:hover::before{background:#d8942c}
-.grit{border:0;height:16px;margin:30px 0 2px;background:linear-gradient(90deg,#767e85 0 33%,#8a939a 33% 66%,#a7b0b5 66% 100%);box-shadow:0 -2.6px 0 #5e3e22,0 2.6px 0 #5e3e22}
-pre{background:#3c2715;color:#f4ecd8;padding:16px 20px;overflow-x:auto;font-family:Menlo,monospace}
-footer{max-width:920px;margin:0 auto;padding:4px 22px 40px;color:#6a5638;font-size:.93rem}
+.grit{border:0;height:10px;margin:30px 0 2px;background:repeating-linear-gradient(90deg,#f2ecd9 0 34px,#26282e 34px 44px);position:relative}
+.grit::after{content:'';position:absolute;right:12%;top:-4px;width:9px;height:9px;border-radius:50%;background:#37c978;box-shadow:0 0 8px #37c978}
+pre{background:#101114;color:#f2ecd9;padding:16px 20px;overflow-x:auto;font-family:'Space Mono',monospace;border:1px solid #4a4e57}
+footer{max-width:920px;margin:0 auto;padding:4px 22px 40px;color:#8b9097;font-size:.93rem}
 </style>
 </head>
 <body>
 <header class="hero">
-<img src="https://raw.githubusercontent.com/Epsilon0xCell/Maxi-Schedule-Generator/main/intro-banner.png" alt="The stall before opening, the fine stone holding the morning in its water">
+<img src="https://raw.githubusercontent.com/Epsilon0xCell/Maxi-Schedule-Generator/main/intro-banner.png" alt="A wide black split-flap departure board whose cream flaps have settled into a varied pattern of long and short blocks, dark unflipped modules at both sides, one small green lamp lit">
 <h1>Maxi-Schedule-Generator</h1>
-<p class="lede">Maxi is a command line schedule generator that builds a flexible personal day from a person's age, habits, current situation, sleep and wake times, and a chosen adaptability level, and it deliberately avoids micromanaging the hours it proposes. This site is the sharpener's order book: the day is entered in the order the work will actually happen.</p>
+<p class="lede">Maxi is a command line schedule generator that builds a flexible personal day from a person's age, habits, current situation, sleep and wake times, and a chosen adaptability level, and it deliberately avoids micromanaging the hours it proposes. This site is the departure board: the day is posted in the order it will actually happen, flap by flap.</p>
 <p><a class="stonebtn" href="https://github.com/Epsilon0xCell/Maxi-Schedule-Generator">The repo on GitHub</a> <a class="stonebtn" href="#run">Running Maxi</a></p>
 </header>
 <main>
 <hr class="grit">
-<h2>Page one: the intake questions, asked at the counter</h2>
+<h2>Board one: the intake questions, asked at the counter</h2>
 <div class="slip">
 <div class="row"><span>Age</span><span>factor 1</span></div>
 <div class="row"><span>Habits you wish to achieve</span><span>factor 2</span></div>
@@ -62,15 +64,15 @@ footer{max-width:920px;margin:0 auto;padding:4px 22px 40px;color:#6a5638;font-si
 <p>The day is shaped around the sleeper first and the tasks second: wake and sleep times anchor everything else. All answers and the generated schedule are saved to a document titled scheduleai.txt, unless you pick a different output file with --output.</p>
 </div>
 <hr class="grit">
-<h2>Page two: the method, worked as a grit sequence</h2>
+<h2>Board two: the method, worked as a flip sequence</h2>
 <div class="stage" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="slip">
-<p><b>Coarse pass.</b> The non negotiable blocks are fixed first: sleep, work or study, meals. Meals are placed adaptively or at fixed times, as the intake answered.</p>
-<p><b>Middle pass.</b> Flexible activities are arranged in the gaps: habits and a health block woven between focus blocks, breaks following the chosen style, pomodoro 25 and 5, flowmodoro 50 and 10, or one large break.</p>
-<p><b>Fine pass.</b> Transitions are smoothed and breathing room is left. The adaptability score sets how much buffer sits between blocks, and Maxi leaves slack on purpose rather than packing every minute. A 30 minute wind down block closes the day at the sleep time, and sleep times at or before the wake time are treated as the next day.</p>
+<p><b>First flip.</b> The non negotiable blocks are fixed first: sleep, work or study, meals. Meals are placed adaptively or at fixed times, as the intake answered.</p>
+<p><b>Middle flip.</b> Flexible activities are arranged in the gaps: habits and a health block woven between focus blocks, breaks following the chosen style, pomodoro 25 and 5, flowmodoro 50 and 10, or one large break.</p>
+<p><b>Final flip.</b> Transitions are smoothed and breathing room is left. The adaptability score sets how much buffer sits between blocks, and Maxi leaves slack on purpose rather than packing every minute. A 30 minute wind down block closes the day at the sleep time, and sleep times at or before the wake time are treated as the next day.</p>
 </div>
 <hr class="grit">
-<h2>Page three: a worked example day, on an order slip</h2>
+<h2>Board three: a worked example day, as posted</h2>
 <div class="slip">
 <div class="day"><b>07:00</b><span>Wake. The day opens here, not at the first task.</span></div>
 <div class="day"><b>07:30</b><span>Breakfast, placed adaptively.</span></div>
@@ -80,12 +82,12 @@ footer{max-width:920px;margin:0 auto;padding:4px 22px 40px;color:#6a5638;font-si
 <div class="day"><b>12:30</b><span>Lunch.</span></div>
 <div class="day"><b>14:00</b><span>Focus block, with a health block woven in.</span></div>
 <div class="day"><b>18:00</b><span>Dinner.</span></div>
-<div class="day"><b>19:00</b><span class="slack">Intentional space, kept empty by the fine pass.</span></div>
+<div class="day"><b>19:00</b><span class="slack">Intentional space, kept empty by the final flip.</span></div>
 <div class="day"><b>22:30</b><span>Wind down, 30 minutes, closing at the sleep time of 23:00.</span></div>
 <p>An illustration of the shape Maxi builds from the rules above, not a captured run. The generated day is a guide with slack built in, not an order to be obeyed minute by minute.</p>
 </div>
 <hr class="grit">
-<h2 id="run">Closing page: running Maxi locally</h2>
+<h2 id="run">Last board: running Maxi locally</h2>
 <p>Requires Python 3 only: standard library, nothing to install, no API key.</p>
 <pre>python3 main.py
 python3 main.py --answers answers.txt
@@ -96,7 +98,7 @@ python3 main.py --answers answers.txt --output my-schedule.txt</pre>
 <p><a class="slice" href="https://github.com/Epsilon0xCell/Maxi-Schedule-Generator/tree/main/Maxi-Schedule-Generator-Visuals">The visuals folder in the repo</a></p>
 </main>
 <footer>
-<p>Files: main.py, test_main.py, assets, and LICENSE (MIT). Fonts: Allura for display and Cabin for text, both SIL Open Font License 1.1, license texts beside the font files. The lettering reference named in the project prose was set aside as a mismatch and is not embedded.</p>
+<p>Files: main.py, test_main.py, assets, and LICENSE (MIT). Fonts: Space Mono for display and Inter for text, both SIL Open Font License 1.1, self-hosted, license texts beside the font files.</p>
 </footer>
 </body>
 </html>
